@@ -2,7 +2,7 @@ source("../ddibp.R",chdir=T)
 library(xtable)
 library(shiny)
 
-B <- 1e5 # problems
+B <- 1e4 # problems
 a <- .5
 
 # 1 close to 2, 2 close-ish to 3, 1 far from 3. 
