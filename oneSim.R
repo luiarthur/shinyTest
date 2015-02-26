@@ -26,7 +26,9 @@ D3 <- matrix(c(0,1,3,
 exp.decay <- function(s,t,d) ifelse(s>t,0,exp(-d[s,t]))
 inv <- function(s,t,d) ifelse(s>t,0,1/d[s,t])
 
-one.sim <- function(D,D.name,a,B=1e4,num.cex=1) {
+one.sim <- function(D.name,a,B=1e4,num.cex=1) {
+  D <- eval(parse(text=D.name))
+
   cat("Getting Draws (1/6): \n")
   Z.o <- lapply(as.list(1:B),function(x) {ot <- Sys.time() 
                                           o <- raibp(N=nrow(D),a=a)
