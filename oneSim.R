@@ -29,7 +29,7 @@ inv <- function(s,t,d) ifelse(s>t,0,1/d[s,t])
 one.sim <- function(D.name,a,B=1e4,num.cex=1) {
   D <- eval(parse(text=D.name))
 
-  cat("Getting Draws (1/6): \n")
+  cat("Getting Draws (1/4): \n")
   Z.o <- lapply(as.list(1:B),function(x) {ot <- Sys.time() 
                                           o <- raibp(N=nrow(D),a=a)
                                           count.down(ot,x,B); o})
@@ -41,7 +41,7 @@ one.sim <- function(D.name,a,B=1e4,num.cex=1) {
   #Z.a <- lapply(as.list(1:B),function(x) raibp(N=nrow(D),a=a,D=D,l=inv.decay))
   #Z.a <- lapply(as.list(1:B),function(x) raibp(N=nrow(D),a=a))
 
-  cat("Calculating Expected Values (2/6): \n")
+  cat("Calculating Expected Values (2/4): \n")
   EZO <- sum.matrices(Z.o)/B
   EZD <- sum.matrices(Z.d)/B
   EZA <- sum.matrices(Z.a)/B
@@ -51,25 +51,8 @@ one.sim <- function(D.name,a,B=1e4,num.cex=1) {
   mncold <- mean(unlist(lapply(Z.d,ncol)))
   mncola <- mean(unlist(lapply(Z.a,ncol)))
 
-  cat("Plotting Graphs (3/6): \n")
-  png(paste0("www/",D.name,".png"),height=700)
-  #png(paste0("pdf/",D.name,".png"))
-    par(mfrow=c(4,1))
-      #nr <- nrow(D)
-      f <- exp(-D)
-      f[which(upper.tri(f))] <- 0
-      #f <- matrix(prettyNum(f,width=11,format="fg"),nr,nr)
-      a.image(round(f,5),main="Proximity Matrix",axis=F,numb=T,num.cex=num.cex)
-      a.image(EZO,main=paste("IBP, E[ncol] =",mncolo),cex.axis=1,numb=T,
-              num.cex=num.cex)
-      a.image(EZD,main=paste("ddIBP, E[ncol] =",mncold),cex.axis=1,numb=T,
-              num.cex=num.cex*.8)
-      a.image(EZA,main=paste("aIBP, E[ncol] =",mncola),cex.axis=1,numb=T,
-              num.cex=num.cex)
-    par(mfrow=c(1,1))
-  dev.off()
 
-  cat("Getting Unique Matrices from Draws (4/6): \n")
+  cat("Getting Unique Matrices from Draws (3/4): \n")
   uzo <- unique.matrix(Z.o)
   uzd <- unique.matrix(Z.d)
   uza <- unique.matrix(Z.a)
@@ -84,22 +67,6 @@ one.sim <- function(D.name,a,B=1e4,num.cex=1) {
     colnames(info) <- c("matrix#",paste(rep(c("IBP","aIBP","ddIBP"),each=2),
                         c("empirical","theoretical")))
 
-    # Make this faster using unique.matrix
-    #get.freq <- function(m,Zs) {
-    #  count <- 0
-    #  ll <- length(Zs)
-
-    #  for (i in 1:ll) {
-    #    z <- Zs[[i]]
-    #    if (ncol(m)==ncol(z) && nrow(m)==nrow(z)) {
-    #      if (ncol(m)==0 || all(m==z)){
-    #        count <- count + 1
-    #      }
-    #    }
-    #  }
-    #  
-    #  count/B
-    #}
     cmo <- get.freqs(Z.o)
     cma <- get.freqs(Z.a)
     cmd <- get.freqs(Z.d)
@@ -116,13 +83,8 @@ one.sim <- function(D.name,a,B=1e4,num.cex=1) {
     list("info"=info,"unique"=u.all)
   }
 
-  cat("Comparing Methods (5/6): \n")
+  cat("Comparing Methods (4/4): \n")
   M <- compare()
-
-  cat("Printing output (6/6): \n")
-  sink(paste0("www/out",D.name,".txt"))
-    print(M)
-  sink()
 
   options("width"=80)
   list("EZO"=EZO,"EZD"=EZD,"EZA"=EZA,"uzo"=uzo,"uzd"=uzd,"uza"=uza,"M"=M,
