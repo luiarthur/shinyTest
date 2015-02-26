@@ -77,7 +77,7 @@ one.sim <- function(D.name,a,B=1e4,num.cex=1) {
     info[,5] <- unlist(lapply(u.all$m,function(z) daibp(z,a=a,D=D,l=exp.decay)))
     info[,6] <- unlist(lapply(u.all$m,function(z) get.freq(z,cmd)))
     info[,7] <- NA
-    info <- info[order(info[,3],decr=T),]
+    info <- info[order(info[,3],decreasing=TRUE),]
     info[,1] <- 1:n
 
     list("info"=info,"unique"=u.all)
