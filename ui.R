@@ -1,5 +1,5 @@
 shinyUI(fluidPage(
-  titlePanel("Attraction IBP"),
+  titlePanel("Simulation Study: IBP vs. aIBP vs. ddIBP"),
 
   sidebarLayout(position="right",
     sidebarPanel(
