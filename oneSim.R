@@ -71,14 +71,14 @@ one.sim <- function(D.name,a,B=1e4,num.cex=1) {
     cma <- get.freqs(Z.a)
     cmd <- get.freqs(Z.d)
 
-    info[,1] <- 1:n
     info[,2] <- unlist(lapply(u.all$m,function(z) get.freq(z,cmo)))
     info[,3] <- unlist(lapply(u.all$m,function(z) daibp(z,a=a)))
     info[,4] <- unlist(lapply(u.all$m,function(z) get.freq(z,cma)))
     info[,5] <- unlist(lapply(u.all$m,function(z) daibp(z,a=a,D=D,l=exp.decay)))
     info[,6] <- unlist(lapply(u.all$m,function(z) get.freq(z,cmd)))
     info[,7] <- NA
-    head(info,20)
+    info <- info[order(info[,3]),]
+    info[,1] <- 1:n
 
     list("info"=info,"unique"=u.all)
   }
