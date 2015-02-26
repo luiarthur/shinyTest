@@ -5,9 +5,9 @@ shinyServer(function(input,output) {
   
   output$distMat = renderUI({
     D <- eval(parse(text=paste0("D",input$distMatNum)))
-    D <- print(xtable(D, align=rep("r", ncol(D)+1), digits=0),
+    D <- print(xtable(D, align=rep("", ncol(D)+1), digits=0),
                floating=FALSE, tabular.environment="pmatrix", comment=FALSE, 
-               print.results=FALSE,hline.after=NULL,
+               print.results=TRUE,hline.after=NULL,
                include.rowname=FALSE,include.colname=FALSE)
     html <- paste0("$$", D, "$$")
     withMathJax(helpText(html))
