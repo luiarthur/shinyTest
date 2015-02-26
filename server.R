@@ -1,5 +1,5 @@
 shinyServer(function(input,output) {
-  source("../ddibp.R",chdir=T)
+  source("ddibp.R",chdir=T)
   source("oneSim.R")
   library(xtable)
   
