@@ -137,6 +137,7 @@ one.sim <- function(D.name,a,B=1e4,num.cex=1) {
 
   cat("Comparing Methods (4/4): \n")
   M <- compare()
+  cat("Done\n")
 
   options("width"=80)
   list("EZO"=EZO,"EZD"=EZD,"EZA"=EZA,"uzo"=uzo,"uzd"=uzd,"uza"=uza,"M"=M,
