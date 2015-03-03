@@ -60,6 +60,9 @@ D13 <- matrix(c(0,9,9,1,
                 9,9,0,9,
                 1,9,9,0),4,4)
 
+D99 <- matrix(9,7,7)
+diag(D99) <- 0
+D99[1,7] <- D99[7,1] <- 1
 
 #D <- matrix(0,3,3); D[which(lower.tri(D))] <- 1; 
 #D <- matrix(1,3,3); D[which(upper.tri(D))] <- 0; 
