@@ -30,7 +30,7 @@ D6 <- matrix(c(0,9,1,
 D7 <- matrix(c(0,1,1,9,
                1,0,1,1,
                1,1,0,1,
-               9,1,1,0),3,3)
+               9,1,1,0),4,4)
 
 #D <- matrix(0,3,3); D[which(lower.tri(D))] <- 1; 
 #D <- matrix(1,3,3); D[which(upper.tri(D))] <- 0; 
