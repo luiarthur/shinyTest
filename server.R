@@ -44,6 +44,7 @@ shinyServer(function(input,output) {
   #  list(src=paste0("www/D",input$distMatNum,".png"))
   #}, deleteFile=FALSE)
 
+  isolate({
   output$matFreq = renderDataTable({
     (result())$M$info
   })
@@ -56,6 +57,8 @@ shinyServer(function(input,output) {
             result()$mncold))
     par(mfrow=c(1,1))
   })
+  })
+
   #output$eibp   = renderPlot({(a.image(result()$EZO,number=T,
   #                             main=paste("E[IBP], E[ncol] =",result()$mncolo)))})
   #output$eaibp  = renderPlot({(a.image(result()$EZA,number=T,
