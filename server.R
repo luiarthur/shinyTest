@@ -36,7 +36,9 @@ shinyServer(function(input,output) {
   #  list(src=paste0("www/D",input$distMatNum,".png"))
   #}, deleteFile=FALSE)
 
-  output$matFreq = renderDataTable({(result())$M$info})
+  output$matFreq = renderDataTable({
+    (result())$M$info
+  })
 
   output$expVal = renderPlot({
     par(mfrow=c(3,1))

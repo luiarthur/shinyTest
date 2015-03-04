@@ -9,6 +9,7 @@ shinyUI(fluidPage(
       uiOutput("matrix"),
       numericInput("distMatNum",label="Distance Matrix",value=1,min=1,max=9),
       uiOutput("distMat"),
+      actionButton("submit","Submit"),
       tags$hr(), br(),
       
       tags$b("Expected Values:"),
