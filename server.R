@@ -18,14 +18,10 @@ shinyServer(function(input,output) {
   
   #B <- reactive({input$its})
   #a <- reactive({input$alpha})
-  #result <- reactive({one.sim(paste0("D",input$distMatNum),
-  #                    a=input$alpha,B=input$its)})
-  
-  input$submit
-  isolate (
-    result <- one.sim(paste0("D",input$distMatNum),
-              a=input$alpha,B=input$its)
-  )
+  #result <- NULL
+  result <- reactive({one.sim(paste0("D",input$distMatNum),
+                      a=input$alpha,B=input$its)})
+
 
   output$distMat = renderUI({
     DM <- eval(parse(text=paste0("D",input$distMatNum))) # Distance Matrix
@@ -44,6 +40,8 @@ shinyServer(function(input,output) {
   output$matFreq = renderDataTable({
     (result())$M$info
   })
+
+  print(output$matFreq)
 
   output$expVal = renderPlot({
    par(mfrow=c(3,1))
