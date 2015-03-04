@@ -85,7 +85,7 @@ D55[1,5] <- D55[5,1] <- 1
 exp.decay <- function(s,t,d) ifelse(s>t,0,exp(-d[s,t]))
 inv <- function(s,t,d) ifelse(s>t,0,1/d[s,t])
 
-one.sim <- function(D.name,a,B=1e4,num.cex=1) {
+one.sim <- function(D.name,a,B=1e4,num.cex=1,printProgress=F) {
   D <- eval(parse(text=D.name))
 
   cat("Getting Draws (1/4): \n")
@@ -130,14 +130,22 @@ one.sim <- function(D.name,a,B=1e4,num.cex=1) {
     cma <- get.freqs(Z.a)
     cmd <- get.freqs(Z.d)
 
+
+    if (printProgress) cat("Calculating Info[,1/7]\n")
     info[,2] <- unlist(lapply(u.all$m,function(z) get.freq(z,cmo)))
+    if (printProgress) cat("Calculating Info[,2/7]\n")
     info[,3] <- unlist(lapply(u.all$m,function(z) daibp(z,a=a)))
+    if (printProgress) cat("Calculating Info[,3/7]\n")
     info[,4] <- unlist(lapply(u.all$m,function(z) get.freq(z,cma)))
+    if (printProgress) cat("Calculating Info[,4/7]\n")
     info[,5] <- unlist(lapply(u.all$m,function(z) daibp(z,a=a,D=D,l=exp.decay)))
+    if (printProgress) cat("Calculating Info[,5/7]\n")
     info[,6] <- unlist(lapply(u.all$m,function(z) get.freq(z,cmd)))
     info[,7] <- NA
-    info <- info[order(info[,3],decreasing=TRUE),]
+    if (printProgress) cat("Calculating Info[,6/7]\n")
+    info <- info[order(info[,7],decreasing=TRUE),]
     info[,1] <- 1:n
+    if (printProgress) cat("Done Calculating Info\n")
 
     list("info"=info,"unique"=u.all)
   }
