@@ -20,11 +20,12 @@ shinyServer(function(input,output) {
   #a <- reactive({input$alpha})
   #result <- NULL
   #submit <- input$submit
+  input$submit <- 0
+
   result <- reactive({
     if (input$submit==0) return(NULL)
     one.sim(paste0("D",input$distMatNum),a=input$alpha,B=input$its)
   })
-  
 
   output$distMat = renderUI({
     DM <- eval(parse(text=paste0("D",input$distMatNum))) # Distance Matrix
@@ -54,13 +55,6 @@ shinyServer(function(input,output) {
               result()$mncold))
     par(mfrow=c(1,1))
   })
-
-  #output$eibp   = renderPlot({(a.image(result()$EZO,number=T,
-  #                             main=paste("E[IBP], E[ncol] =",result()$mncolo)))})
-  #output$eaibp  = renderPlot({(a.image(result()$EZA,number=T,
-  #                             main=paste("E[AIBP], E[ncol] =",result()$mncola)))})
-  #output$eddibp = renderPlot({(a.image(result()$EZD,number=T,
-  #                             main=paste("E[ddIBP], E[ncol] =",result()$mncold)))})
 
   output$matrix=renderUI({ 
     if(input$submit==0) return(NULL)
