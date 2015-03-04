@@ -18,12 +18,10 @@ shinyServer(function(input,output) {
   
   #B <- reactive({input$its})
   #a <- reactive({input$alpha})
-  result <- NULL
-  submit <- input$submit
-  isolate({
-    result <- reactive({one.sim(paste0("D",input$distMatNum),
-                        a=input$alpha,B=input$its)})
-  })
+  #result <- NULL
+  #submit <- input$submit
+  result <- reactive({one.sim(paste0("D",input$distMatNum),
+                      a=input$alpha,B=input$its)})
 
   #if (submit) {
   #  result <- one.sim(paste0("D",input$distMatNum),
@@ -44,7 +42,6 @@ shinyServer(function(input,output) {
   #  list(src=paste0("www/D",input$distMatNum,".png"))
   #}, deleteFile=FALSE)
 
-  isolate({
   output$matFreq = renderDataTable({
     (result())$M$info
   })
@@ -56,7 +53,6 @@ shinyServer(function(input,output) {
     a.image(result()$EZD,number=T, main=paste("E[ddIBP], E[ncol] =",
             result()$mncold))
     par(mfrow=c(1,1))
-  })
   })
 
   #output$eibp   = renderPlot({(a.image(result()$EZO,number=T,
