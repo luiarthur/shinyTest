@@ -18,15 +18,15 @@ shinyServer(function(input,output) {
   
   #B <- reactive({input$its})
   #a <- reactive({input$alpha})
-  result <- NULL
-  #result <- reactive({one.sim(paste0("D",input$distMatNum),
-  #                    a=input$alpha,B=input$its)})
-  submit <- input$submit
+  #result <- NULL
+  result <- reactive({one.sim(paste0("D",input$distMatNum),
+                      a=input$alpha,B=input$its)})
+  #submit <- input$submit
 
-  if (submit) {
-    result <- one.sim(paste0("D",input$distMatNum),
-              a=input$alpha,B=input$its)
-  }
+  #if (submit) {
+  #  result <- one.sim(paste0("D",input$distMatNum),
+  #            a=input$alpha,B=input$its)
+  #}
 
   output$distMat = renderUI({
     DM <- eval(parse(text=paste0("D",input$distMatNum))) # Distance Matrix
@@ -44,19 +44,15 @@ shinyServer(function(input,output) {
 
   if (submit) {
     output$matFreq = renderDataTable({
-      result$M$info
-      #(result())$M$info
+      (result())$M$info
     })
 
     output$expVal = renderPlot({
      par(mfrow=c(3,1))
-      a.image(result$EZO,number=T,main=paste("E[IBP], E[ncol] =",result$mncolo))
-      a.image(result$EZA,number=T,main=paste("E[AIBP], E[ncol] =",result$mncola))
-      a.image(result$EZD,number=T, main=paste("E[ddIBP], E[ncol] =",result$mncold))
-      #a.image(result()$EZO,number=T,main=paste("E[IBP], E[ncol] =",result()$mncolo))
-      #a.image(result()$EZA,number=T,main=paste("E[AIBP], E[ncol] =",result()$mncola))
-      #a.image(result()$EZD,number=T, main=paste("E[ddIBP], E[ncol] =",
-      #        result()$mncold))
+      a.image(result()$EZO,number=T,main=paste("E[IBP], E[ncol] =",result()$mncolo))
+      a.image(result()$EZA,number=T,main=paste("E[AIBP], E[ncol] =",result()$mncola))
+      a.image(result()$EZD,number=T, main=paste("E[ddIBP], E[ncol] =",
+              result()$mncold))
       par(mfrow=c(1,1))
     })
   }
@@ -67,6 +63,5 @@ shinyServer(function(input,output) {
   #output$eddibp = renderPlot({(a.image(result()$EZD,number=T,
   #                             main=paste("E[ddIBP], E[ncol] =",result()$mncold)))})
 
-  #output$matrix=renderUI({ printMatrix(result()$M$unique$matrix[[input$matNum]]) })
-  output$matrix=renderUI({ printMatrix(result$M$unique$matrix[[input$matNum]]) })
+  output$matrix=renderUI({ printMatrix(result()$M$unique$matrix[[input$matNum]]) })
 })
