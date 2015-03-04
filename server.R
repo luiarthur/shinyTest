@@ -18,9 +18,14 @@ shinyServer(function(input,output) {
   
   #B <- reactive({input$its})
   #a <- reactive({input$alpha})
-  result <- reactive({one.sim(paste0("D",input$distMatNum),
-                      a=input$alpha,B=input$its)})
-  #print(result()$M)
+  #result <- reactive({one.sim(paste0("D",input$distMatNum),
+  #                    a=input$alpha,B=input$its)})
+  
+  input$submit
+  isolate (
+    result <- one.sim(paste0("D",input$distMatNum),
+              a=input$alpha,B=input$its)
+  )
 
   output$distMat = renderUI({
     DM <- eval(parse(text=paste0("D",input$distMatNum))) # Distance Matrix
