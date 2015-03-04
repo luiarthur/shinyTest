@@ -18,6 +18,11 @@ shinyServer(function(input,output) {
   
   #B <- reactive({input$its})
   #a <- reactive({input$alpha})
+  input$submit
+  isolate(input$a)
+  isolate(input$B)
+  isolate(input$distMatNum)
+
   result <- reactive({one.sim(paste0("D",input$distMatNum),
                       a=input$alpha,B=input$its)})
   #print(result()$M)
@@ -37,20 +42,10 @@ shinyServer(function(input,output) {
   #}, deleteFile=FALSE)
 
   output$matFreq = renderDataTable({
-    input$submit
-    isolate(input$a)
-    isolate(input$B)
-    isolate(input$distMatNum)
-
     (result())$M$info
   })
 
   output$expVal = renderPlot({
-    input$submit
-    isolate(input$a)
-    isolate(input$B)
-    isolate(input$distMatNum)
-
    par(mfrow=c(3,1))
     a.image(result()$EZO,number=T,main=paste("E[IBP], E[ncol] =",result()$mncolo))
     a.image(result()$EZA,number=T,main=paste("E[AIBP], E[ncol] =",result()$mncola))
