@@ -11,7 +11,7 @@ shinyUI(fluidPage(
       numericInput("alpha",label="Alpha",value=.5,min=1e-6),
       numericInput("distMatNum",label="Distance Matrix",value=1,min=1,max=9),
       uiOutput("distMat"),
-      actionButton("submit","Submit"),
+      #actionButton("submit","Submit"),
       tags$hr(), br(),
 
       tags$b("Expected Values:"),
