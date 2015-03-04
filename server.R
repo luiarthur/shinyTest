@@ -42,20 +42,18 @@ shinyServer(function(input,output) {
   #  list(src=paste0("www/D",input$distMatNum,".png"))
   #}, deleteFile=FALSE)
 
-  if (submit) {
-    output$matFreq = renderDataTable({
-      (result())$M$info
-    })
+  output$matFreq = renderDataTable({
+    (result())$M$info
+  })
 
-    output$expVal = renderPlot({
-     par(mfrow=c(3,1))
-      a.image(result()$EZO,number=T,main=paste("E[IBP], E[ncol] =",result()$mncolo))
-      a.image(result()$EZA,number=T,main=paste("E[AIBP], E[ncol] =",result()$mncola))
-      a.image(result()$EZD,number=T, main=paste("E[ddIBP], E[ncol] =",
-              result()$mncold))
-      par(mfrow=c(1,1))
-    })
-  }
+  output$expVal = renderPlot({
+   par(mfrow=c(3,1))
+    a.image(result()$EZO,number=T,main=paste("E[IBP], E[ncol] =",result()$mncolo))
+    a.image(result()$EZA,number=T,main=paste("E[AIBP], E[ncol] =",result()$mncola))
+    a.image(result()$EZD,number=T, main=paste("E[ddIBP], E[ncol] =",
+            result()$mncold))
+    par(mfrow=c(1,1))
+  })
   #output$eibp   = renderPlot({(a.image(result()$EZO,number=T,
   #                             main=paste("E[IBP], E[ncol] =",result()$mncolo)))})
   #output$eaibp  = renderPlot({(a.image(result()$EZA,number=T,
