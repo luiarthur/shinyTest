@@ -18,10 +18,12 @@ shinyServer(function(input,output) {
   
   #B <- reactive({input$its})
   #a <- reactive({input$alpha})
-  #result <- NULL
-  result <- reactive({one.sim(paste0("D",input$distMatNum),
-                      a=input$alpha,B=input$its)})
-  #submit <- input$submit
+  result <- NULL
+  submit <- input$submit
+  isolate({
+    result <- reactive({one.sim(paste0("D",input$distMatNum),
+                        a=input$alpha,B=input$its)})
+  })
 
   #if (submit) {
   #  result <- one.sim(paste0("D",input$distMatNum),
