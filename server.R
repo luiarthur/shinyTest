@@ -41,7 +41,7 @@ shinyServer(function(input,output) {
     (result())$M$info
   })
 
-  print(output$matFreq)
+  #print(output$matFreq)
 
   output$expVal = renderPlot({
    par(mfrow=c(3,1))
