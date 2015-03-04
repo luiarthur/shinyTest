@@ -20,7 +20,6 @@ shinyServer(function(input,output) {
   #a <- reactive({input$alpha})
   #result <- NULL
   #submit <- input$submit
-  input$submit <- 0
 
   result <- reactive({
     if (input$submit==0) return(NULL)
