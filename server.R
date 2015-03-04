@@ -20,7 +20,7 @@ shinyServer(function(input,output) {
   #a <- reactive({input$alpha})
   #result <- NULL
   #submit <- input$submit
-
+  
   result <- reactive({
     if (input$submit==0) return(NULL)
     one.sim(paste0("D",input$distMatNum),a=input$alpha,B=input$its)
