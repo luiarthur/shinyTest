@@ -25,9 +25,8 @@ shinyServer(function(input,output) {
   isolate(input$distMatNum)
   isolate(input$alpha)
   isolate(input$its)
-
-  result <- one.sim(paste0("D",input$distMatNum), a=input$alpha,B=input$its)
-
+  result <- reactive({one.sim(paste0("D",input$distMatNum),
+                      a=input$alpha,B=input$its)})
 
 
   output$distMat = renderUI({
