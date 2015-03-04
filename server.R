@@ -20,13 +20,11 @@ shinyServer(function(input,output) {
   #a <- reactive({input$alpha})
   #result <- NULL
   #submit <- input$submit
-  result <- reactive({one.sim(paste0("D",input$distMatNum),
-                      a=input$alpha,B=input$its)})
-
-  #if (submit) {
-  #  result <- one.sim(paste0("D",input$distMatNum),
-  #            a=input$alpha,B=input$its)
-  #}
+  result <- reactive({
+    if (input$submit==0) return(NULL)
+    one.sim(paste0("D",input$distMatNum),a=input$alpha,B=input$its)
+  })
+  
 
   output$distMat = renderUI({
     DM <- eval(parse(text=paste0("D",input$distMatNum))) # Distance Matrix
@@ -43,15 +41,17 @@ shinyServer(function(input,output) {
   #}, deleteFile=FALSE)
 
   output$matFreq = renderDataTable({
+    if (input$submit==0) return(NULL)
     (result())$M$info
   })
 
   output$expVal = renderPlot({
-   par(mfrow=c(3,1))
-    a.image(result()$EZO,number=T,main=paste("E[IBP], E[ncol] =",result()$mncolo))
-    a.image(result()$EZA,number=T,main=paste("E[AIBP], E[ncol] =",result()$mncola))
-    a.image(result()$EZD,number=T, main=paste("E[ddIBP], E[ncol] =",
-            result()$mncold))
+    if(input$submit==0) return(NULL)
+    par(mfrow=c(3,1))
+      a.image(result()$EZO,number=T,main=paste("E[IBP], E[ncol] =",result()$mncolo))
+      a.image(result()$EZA,number=T,main=paste("E[AIBP], E[ncol] =",result()$mncola))
+      a.image(result()$EZD,number=T, main=paste("E[ddIBP], E[ncol] =",
+              result()$mncold))
     par(mfrow=c(1,1))
   })
 
@@ -62,5 +62,8 @@ shinyServer(function(input,output) {
   #output$eddibp = renderPlot({(a.image(result()$EZD,number=T,
   #                             main=paste("E[ddIBP], E[ncol] =",result()$mncold)))})
 
-  output$matrix=renderUI({ printMatrix(result()$M$unique$matrix[[input$matNum]]) })
+  output$matrix=renderUI({ 
+    if(input$submit==0) return(NULL)
+    printMatrix(result()$M$unique$matrix[[input$matNum]])
+  })
 })
