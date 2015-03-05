@@ -226,7 +226,7 @@ raibp <- function(N=3,a=3,D=NULL,l=inv,lf=function(x) 1,permute=F) {
   if (N>=2) {
     for (i in 2:N) {
       P <- f.(Z,i,lam=function(s,t,d=D) l(s,t,d))
-      Q <- q.(Z,i,lam=function(s,t,d=D) l(s,t,d),lamf=lf,D=D)
+      #Q <- q.(Z,i,lam=function(s,t,d=D) l(s,t,d),lamf=lf,D=D)
       #print(Q)
       if (K>0) Z[i,] <- P > runif(K) #4March Original
       #if (K>0) Z[i,] <- P*Q > runif(K) #4March New
