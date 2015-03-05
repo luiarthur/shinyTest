@@ -27,6 +27,10 @@ D6 <- matrix(c(0,9,1,
                9,0,1,
                1,1,0),3,3)
 
+D71 <- matrix(c(0,1,9,
+                1,0,9,
+                9,9,0),3,3)
+
 D7 <- matrix(c(0,9,1,
                9,0,9,
                1,9,0),3,3)
@@ -67,6 +71,10 @@ D99[1,7] <- D99[7,1] <- 1
 D55 <- matrix(9,5,5)
 diag(D55) <- 0
 D55[1,5] <- D55[5,1] <- 1
+
+D54 <- matrix(9,5,5)
+diag(D54) <- 0
+D54[1,4] <- D54[4,1] <- 1
 
 #D <- matrix(0,3,3); D[which(lower.tri(D))] <- 1; 
 #D <- matrix(1,3,3); D[which(upper.tri(D))] <- 0; 
@@ -131,18 +139,18 @@ one.sim <- function(D.name,a,B=1e4,num.cex=1,printProgress=F) {
     cmd <- get.freqs(Z.d)
 
 
-    if (printProgress) cat("Calculating Info[,1/7]\n")
+    if (printProgress) cat("\tCalculating Info[,1/7]\n")
     info[,2] <- unlist(lapply(u.all$m,function(z) get.freq(z,cmo)))
-    if (printProgress) cat("Calculating Info[,2/7]\n")
+    if (printProgress) cat("\tCalculating Info[,2/7]\n")
     info[,3] <- unlist(lapply(u.all$m,function(z) daibp(z,a=a)))
-    if (printProgress) cat("Calculating Info[,3/7]\n")
+    if (printProgress) cat("\tCalculating Info[,3/7]\n")
     info[,4] <- unlist(lapply(u.all$m,function(z) get.freq(z,cma)))
-    if (printProgress) cat("Calculating Info[,4/7]\n")
+    if (printProgress) cat("\tCalculating Info[,4/7]\n")
     info[,5] <- unlist(lapply(u.all$m,function(z) daibp(z,a=a,D=D,l=exp.decay)))
-    if (printProgress) cat("Calculating Info[,5/7]\n")
+    if (printProgress) cat("\tCalculating Info[,5/7]\n")
     info[,6] <- unlist(lapply(u.all$m,function(z) get.freq(z,cmd)))
     info[,7] <- NA
-    if (printProgress) cat("Calculating Info[,6/7]\n")
+    if (printProgress) cat("\tCalculating Info[,6/7]\n")
     info <- info[order(info[,7],decreasing=TRUE),]
     info[,1] <- 1:n
     if (printProgress) cat("Done Calculating Info\n")
@@ -156,6 +164,23 @@ one.sim <- function(D.name,a,B=1e4,num.cex=1,printProgress=F) {
 
   options("width"=80)
   list("EZO"=EZO,"EZD"=EZD,"EZA"=EZA,"uzo"=uzo,"uzd"=uzd,"uza"=uza,"M"=M,
-       "mncolo"=mncolo,"mncola"=mncola,"mncold"=mncold)
+       "mncolo"=mncolo,"mncola"=mncola,"mncold"=mncold,"D"=D,"a"=a,"B"=B)
 }
+
+# Graphs:
+result <- one.sim("D54",a=2,B=10000,printProg=T)
+result <- one.sim("D55",a=2,B=10000,printProg=T)
+result <- one.sim("D71",a=2,B=10000,printProg=T)
+result <- one.sim("D7",a=2,B=10000,printProg=T)
+result <- one.sim("D8",a=2,B=10000,printProg=T)
+
+X11()
+par(mfrow=c(3,1))
+  a.image(result$EZO,number=T,main=paste("E[IBP], E[ncol] =",result$mncolo),
+          num.cex=1)
+  a.image(result$EZA,number=T,main=paste("E[AIBP], E[ncol] =",result$mncola),
+          num.cex=1)
+  a.image(result$EZD,number=T, main=paste("E[ddIBP], E[ncol] =",
+          result$mncold),num.cex=.9)
+par(mfrow=c(1,1))
 

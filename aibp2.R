@@ -189,12 +189,18 @@ raibp <- function(N=3,a=3,D=NULL,l=inv,permute=F) {
   perm <- sample(1:N)
   if (permute) {D <- permute.D(D,perm)}
 
+  #A <- apply(matrix(1:N),1,function(x){
+  #       
+  #     })#4March New
+
   if (N>=2) {
     for (i in 2:N) {
       P <- f.(Z,i,lam=function(s,t,d) l(s,t,D))
-      if (K>0) Z[i,] <- P > runif(K)
+      if (K>0) Z[i,] <- P > runif(K) #4March Original
+      #if (K>0) Z[i,] <- P > runif(K) #4March New
 
-      newK <- K+rpois(1,a/i)
+      newK <- K+rpois(1,a/i) # 4March Original
+      #newK <- K+rpois(1,a/i) # 4March New
       col0 <- matrix(0,N,newK-K)
 
       if (ncol(col0) > 0) {
