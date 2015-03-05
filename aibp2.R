@@ -164,6 +164,40 @@ f. <- function(x,i=2,draw=F,lam=inv,log=F) {
   out
 }
 
+# Calculate the weights:
+q. <- function(x,i=2,draw=F,lam=inv,lamf=function(x) 1,D,log=F) {
+  K <- ncol(x)
+  if (is.null(K)) K <- 0
+  h <- function(x,i,k) {
+    out <- 0
+    if (sum(x[1:(i-1),k]>0)) {
+      ind <- which(x[1:(i-1),k]==1)
+      out <- sum(lam(ind,i)) # sum of proximities for obs in col k that have dish k 
+    }
+    out
+  }
+
+  A <- apply(lamf(D),1,sum)
+
+  out <- 0
+  if (K>0) {
+    t <- apply(matrix(1:K),1,function(k) h(x,i,k)) 
+    out <- rep(0,K)
+    if (draw) x[i,] <- 1
+    if (sum(t)>0) {
+      if (!log) {
+        out <- sum(t)/sum(lam(A,i))/K
+        #out <- t^x[i,]*(sum(t)-t)^(i-x[i,])/sum(t) * sum(x[1:(i-1),])/i
+      } else {
+        #out <- x[i,]*log(t)+(i-x[i,])*log(sum(t)-t)-
+        #       log(sum(t))+log(sum(x[1:(i-1),]))-log(i)
+      }
+    }
+  }
+
+  out
+}
+
 permute.D <- function(D,perm) {
   n <- nrow(D)
   orig.lower <- D[lower.tri(D)]
@@ -175,7 +209,7 @@ permute.D <- function(D,perm) {
 }
 
 # For a GIVEN PERMUTATION!!!
-raibp <- function(N=3,a=3,D=NULL,l=inv,permute=F) {
+raibp <- function(N=3,a=3,D=NULL,l=inv,lf=function(x) 1,permute=F) {
   K <- rpois(1,a)
   Z <- matrix(0,N,K) 
   Z[1,0:K] <- 1 # The first customer draws a POI(a) number of new dishes
@@ -189,18 +223,16 @@ raibp <- function(N=3,a=3,D=NULL,l=inv,permute=F) {
   perm <- sample(1:N)
   if (permute) {D <- permute.D(D,perm)}
 
-  #A <- apply(matrix(1:N),1,function(x){
-  #       
-  #     })#4March New
-
   if (N>=2) {
     for (i in 2:N) {
-      P <- f.(Z,i,lam=function(s,t,d) l(s,t,D))
+      P <- f.(Z,i,lam=function(s,t,d=D) l(s,t,d))
+      Q <- q.(Z,i,lam=function(s,t,d=D) l(s,t,d),lamf=lf,D=D)
+      #print(Q)
       if (K>0) Z[i,] <- P > runif(K) #4March Original
-      #if (K>0) Z[i,] <- P > runif(K) #4March New
+      #if (K>0) Z[i,] <- P*Q > runif(K) #4March New
 
       newK <- K+rpois(1,a/i) # 4March Original
-      #newK <- K+rpois(1,a/i) # 4March New
+      #newK <- K+rpois(1,a/i+a*(i-1)/i*(1-Q)) # 4March New
       col0 <- matrix(0,N,newK-K)
 
       if (ncol(col0) > 0) {
@@ -219,7 +251,7 @@ raibp <- function(N=3,a=3,D=NULL,l=inv,permute=F) {
   Z
 }
 
-daibp <- function(Z,a=3,D=NULL,l=inv,log=F,permute=F) {
+daibp <- function(Z,a=3,D=NULL,l=inv,lf=function(d) 1,log=F,permute=F) {
   N <- nrow(Z)
   K <- ncol(Z)
   x <- get.new.dish(Z)

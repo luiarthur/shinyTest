@@ -91,19 +91,22 @@ D54[1,4] <- D54[4,1] <- 1
 #EZ <- sum.matrices(Z)/B
 
 exp.decay <- function(s,t,d) ifelse(s>t,0,exp(-d[s,t]))
+exp.f <- function(d) exp(-d)
 inv <- function(s,t,d) ifelse(s>t,0,1/d[s,t])
+inv.f <- function(d) 1/d
 
-one.sim <- function(D.name,a,B=1e4,num.cex=1,printProgress=F) {
+one.sim <- function(D.name,a,B=1e4,num.cex=1,printProgress=F,lF=function(x) 1) {
   D <- eval(parse(text=D.name))
 
   cat("Getting Draws (1/4): \n")
   Z.o <- lapply(as.list(1:B),function(x) {ot <- Sys.time() 
-                                          o <- raibp(N=nrow(D),a=a)
+                                          o <- raibp(N=nrow(D),a=a,lf=lF)
                                           count.down(ot,x,B); o})
   Z.d <- lapply(as.list(1:B),function(x) {ot <- Sys.time(); o <- rddibp(a=a,D=D)
                                           count.down(ot,x,B); o}) 
   Z.a <- lapply(as.list(1:B),function(x) {ot <- Sys.time()
-                                          o <- raibp(N=nrow(D),a=a,D=D,l=exp.decay)
+                                          o <- raibp(N=nrow(D),a=a,D=D,l=exp.decay,
+                                                     lf=lF)
                                           count.down(ot,x,B); o})
   #Z.a <- lapply(as.list(1:B),function(x) raibp(N=nrow(D),a=a,D=D,l=inv.decay))
   #Z.a <- lapply(as.list(1:B),function(x) raibp(N=nrow(D),a=a))
@@ -167,14 +170,17 @@ one.sim <- function(D.name,a,B=1e4,num.cex=1,printProgress=F) {
        "mncolo"=mncolo,"mncola"=mncola,"mncold"=mncold,"D"=D,"a"=a,"B"=B)
 }
 
+#Comment out:
 # Graphs:
-result <- one.sim("D54",a=2,B=10000,printProg=T)
-result <- one.sim("D55",a=2,B=10000,printProg=T)
-result <- one.sim("D71",a=2,B=10000,printProg=T)
-result <- one.sim("D7",a=2,B=10000,printProg=T)
-result <- one.sim("D8",a=2,B=10000,printProg=T)
+source("ddibp.R")
+a <- 1.5
+result <- one.sim("D54",a=a,B=10000,printProg=T,lF=exp.f)
+result <- one.sim("D55",a=a,B=10000,printProg=T,lF=exp.f)
+result <- one.sim("D71",a=a,B=10000,printProg=T,lF=exp.f)
+result <- one.sim("D7",a=a,B=10000,printProg=T,lF=exp.f)
+result <- one.sim("D8",a=a,B=10000,printProg=T,lF=exp.f)
 
-X11()
+#X11()
 par(mfrow=c(3,1))
   a.image(result$EZO,number=T,main=paste("E[IBP], E[ncol] =",result$mncolo),
           num.cex=1)
