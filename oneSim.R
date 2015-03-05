@@ -76,6 +76,12 @@ D54 <- matrix(9,5,5)
 diag(D54) <- 0
 D54[1,4] <- D54[4,1] <- 1
 
+D5666 <- matrix(9,5,5)
+diag(D5666) <- 0
+D55[1,3] <- D5666[3,1] <- 1
+D55[2,5] <- D5666[5,2] <- 1
+
+
 #D <- matrix(0,3,3); D[which(lower.tri(D))] <- 1; 
 #D <- matrix(1,3,3); D[which(upper.tri(D))] <- 0; 
 #D <- matrix(c(0,1,20,1000,
