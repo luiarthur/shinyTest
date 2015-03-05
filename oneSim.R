@@ -176,23 +176,23 @@ one.sim <- function(D.name,a,B=1e4,num.cex=1,printProgress=F,lF=function(x) 1) {
        "mncolo"=mncolo,"mncola"=mncola,"mncold"=mncold,"D"=D,"a"=a,"B"=B)
 }
 
-#Comment out:
-# Graphs:
-source("ddibp.R")
-a <- 1.5
-result <- one.sim("D54",a=a,B=10000,printProg=T,lF=exp.f)
-result <- one.sim("D55",a=a,B=10000,printProg=T,lF=exp.f)
-result <- one.sim("D71",a=a,B=10000,printProg=T,lF=exp.f)
-result <- one.sim("D7",a=a,B=10000,printProg=T,lF=exp.f)
-result <- one.sim("D8",a=a,B=10000,printProg=T,lF=exp.f)
-
-#X11()
-par(mfrow=c(3,1))
-  a.image(result$EZO,number=T,main=paste("E[IBP], E[ncol] =",result$mncolo),
-          num.cex=1)
-  a.image(result$EZA,number=T,main=paste("E[AIBP], E[ncol] =",result$mncola),
-          num.cex=1)
-  a.image(result$EZD,number=T, main=paste("E[ddIBP], E[ncol] =",
-          result$mncold),num.cex=.9)
-par(mfrow=c(1,1))
+##Comment out:
+## Graphs:
+#source("ddibp.R")
+#a <- 1.5
+#result <- one.sim("D54",a=a,B=10000,printProg=T,lF=exp.f)
+#result <- one.sim("D55",a=a,B=10000,printProg=T,lF=exp.f)
+#result <- one.sim("D71",a=a,B=10000,printProg=T,lF=exp.f)
+#result <- one.sim("D7",a=a,B=10000,printProg=T,lF=exp.f)
+#result <- one.sim("D8",a=a,B=10000,printProg=T,lF=exp.f)
+#
+##X11()
+#par(mfrow=c(3,1))
+#  a.image(result$EZO,number=T,main=paste("E[IBP], E[ncol] =",result$mncolo),
+#          num.cex=1)
+#  a.image(result$EZA,number=T,main=paste("E[AIBP], E[ncol] =",result$mncola),
+#          num.cex=1)
+#  a.image(result$EZD,number=T, main=paste("E[ddIBP], E[ncol] =",
+#          result$mncold),num.cex=.9)
+#par(mfrow=c(1,1))
 
