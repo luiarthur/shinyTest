@@ -223,7 +223,6 @@ raibp <- function(N=3,a=3,D=NULL,l=inv,lf=function(x) 1,permute=F) {
   perm <- sample(1:N)
   if (permute) {D <- permute.D(D,perm)}
 
-f.(X,1,lam=function(s,t,d=D5666) exp(-d[s,t]))
   if (N>=2) {
     for (i in 2:N) {
       P <- f.(Z,i,lam=function(s,t,d=D) l(s,t,d))
