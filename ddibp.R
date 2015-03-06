@@ -29,7 +29,7 @@ a.image <- function(Q,color=rev(heat.colors(100)),#paste0("gray",100:0),
   }
 }
 
-X <- as.matrix(iris[1:5,1:4])
+#X <- as.matrix(iris[1:5,1:4])
 #X <- matrix(c(1,2,3,2,3,4,3,4,5),3,3,byrow=T)
 
 

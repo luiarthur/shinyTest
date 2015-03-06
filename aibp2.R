@@ -132,6 +132,32 @@ get.new.dish <- function(z) {
 
 inv <- function(s,t,d=D) 1/d[s,t] # inverse distance metric
 
+F. <- function(x,a,start=nrow(x)+1,end=nrow(x)+1,lam=inv,log=F) {
+  i <- start
+  N <- nrow(x)+end-start+1
+  K <- ncol(x)
+  #print(N)
+  #print(K)
+  out <- matrix(0,N,K)
+  out[1:nrow(x),] <- x
+  
+  while(i<=end) {
+    p.vec <- f.(out,i=i,lam=lam,log=log)
+    if (K>0) out[i,] <- p.vec > runif(length(p.vec))
+    newK <- K+rpois(1,a/i)
+    col0 <- matrix(0,N,newK-K)
+
+    if (ncol(col0) > 0) {
+      out <- cbind(out,col0)
+      out[i,(K+1):newK] <- 1
+      K <- newK
+    }
+
+    i <- i+1
+  }
+  out
+}
+
 # Calculates Probability of Customer_i Getting Dish_k
 f. <- function(x,i=2,draw=F,lam=inv,log=F) {
   K <- ncol(x)

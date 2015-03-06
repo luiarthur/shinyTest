@@ -1,5 +1,5 @@
-library(xtable)
 source("ddibp.R")
+library(xtable)
 
 B <- 1e4 # problems
 a <- .5
@@ -209,7 +209,13 @@ X <- matrix(c(1,1,0,0,0,0,
               1,1,0,0,0,0,
               0,0,0,0,1,1,
               0,0,0,0,0,0),5,6,byrow=T)
-f.(X,2,lam=function(s,t,d=D5666) exp(-d[s,t]))
-f.(X,3,lam=function(s,t,d=D5666) exp(-d[s,t]))
-f.(X,4,lam=function(s,t,d=D5666) exp(-d[s,t]))
-f.(X,5,lam=function(s,t,d=D5666) exp(-d[s,t]))
+
+Zs <- lapply(as.list(1:B),function(x) 
+            #F.(matrix(X[1,1:2],nrow=1),a=2,staty=2,end=5,lam=function(s,t,d=D5666) exp(-d[s,t])))
+            #F.(X[1:2,1:4],a=2,start=3,end=5,lam=function(s,t,d=D5666) exp(-d[s,t])))
+             F.(X[1:3,1:4],a=2,start=4,end=5,lam=function(s,t,d=D5666) exp(-d[s,t])))
+            #F.(X[1:4,1:6],a=2,start=5,end=5,lam=function(s,t,d=D5666) exp(-d[s,t])))
+
+EZs <- sum.matrices(Zs)/B
+a.image(EZs,number=T,num.cex=.7)
+
