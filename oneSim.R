@@ -174,7 +174,8 @@ one.sim <- function(D.name,a,B=1e4,num.cex=1,printProgress=F,lF=function(x) 1) {
 
   options("width"=80)
   list("EZO"=EZO,"EZD"=EZD,"EZA"=EZA,"uzo"=uzo,"uzd"=uzd,"uza"=uza,"M"=M,
-       "mncolo"=mncolo,"mncola"=mncola,"mncold"=mncold,"D"=D,"a"=a,"B"=B)
+       "mncolo"=mncolo,"mncola"=mncola,"mncold"=mncold,"D"=D,"a"=a,"B"=B,
+       "Zo"=Z.o,"Za"=Z.a,"Zd"=Z.d)
 }
 
 ##Comment out:
@@ -186,8 +187,9 @@ one.sim <- function(D.name,a,B=1e4,num.cex=1,printProgress=F,lF=function(x) 1) {
 #result <- one.sim("D71",a=a,B=10000,printProg=T,lF=exp.f)
 #result <- one.sim("D7",a=a,B=10000,printProg=T,lF=exp.f)
 #result <- one.sim("D8",a=a,B=10000,printProg=T,lF=exp.f)
+#result <- one.sim("D5666",a=2,B=10000,printProg=T,lF=exp.f)
 #
-##X11()
+###X11()
 #pdf("../../../prospectus/images/eSim.pdf")
 #  par(mfrow=c(3,1))
 #    a.image(result$EZO,number=T,main=paste("E[IBP], E[ncol] =",result$mncolo),
@@ -204,18 +206,66 @@ one.sim <- function(D.name,a,B=1e4,num.cex=1,printProgress=F,lF=function(x) 1) {
 #        include.colname=F,hline.after=F,hline=F,tabular.environment="pmatrix")
 #sink()
 
-X <- matrix(c(1,1,0,0,0,0,
-              0,0,1,1,0,0,
-              1,1,0,0,0,0,
-              0,0,0,0,1,1,
-              0,0,0,0,0,0),5,6,byrow=T)
+#B <- 5e4
+#X <- matrix(c(1,1,0,0,0,0,
+#              0,0,1,1,0,0,
+#              1,1,0,0,0,0,
+#              0,0,0,0,1,1,
+#              0,0,0,0,0,0),5,6,byrow=T)
+#
+#Zs <- lapply(as.list(1:B),function(x) {
+#        ot <- Sys.time()
+#      # o <- F.(matrix(X[1,1:2],nrow=1),a=2,start=2,end=5,
+#      #         lam=function(s,t,d=D5666) exp(-d[s,t]))
+#        o <- F.(X[1:2,1:4],a=2,start=3,end=5,lam=function(s,t,d=D5666) exp(-d[s,t]))
+#      # o <- F.(X[1:3,1:4],a=2,start=4,end=5,lam=function(s,t,d=D5666) exp(-d[s,t]))
+#      # o <- F.(X[1:4,1:6],a=2,start=5,end=5,lam=function(s,t,d=D5666) exp(-d[s,t]))
+#        count.down(ot,x,B); o
+#      })
+#
+#EZs <- sum.matrices(Zs)/B
 
-Zs <- lapply(as.list(1:B),function(x) 
-            #F.(matrix(X[1,1:2],nrow=1),a=2,staty=2,end=5,lam=function(s,t,d=D5666) exp(-d[s,t])))
-            #F.(X[1:2,1:4],a=2,start=3,end=5,lam=function(s,t,d=D5666) exp(-d[s,t])))
-             F.(X[1:3,1:4],a=2,start=4,end=5,lam=function(s,t,d=D5666) exp(-d[s,t])))
-            #F.(X[1:4,1:6],a=2,start=5,end=5,lam=function(s,t,d=D5666) exp(-d[s,t])))
+########################
+#B <- 5e4
+#result<- one.sim("D5666",B=B,a=2,printProgress=T)
+#Z.a <- result$Za
+#Z.o <- result$Zo
+#Z.d <- result$Zd
+#
+#calc.settings <- function(Zs) {
+#  Z11 <- lapply(Zs,function(z) if (sum(z[1,])==2) z)
+#  Z11 <- Z11[!unlist(lapply(Z11, is.null))]
+#  EZ11 <- sum.matrices(Z11)/length(Z11)
+#  u.z11 <- unique.matrix(Z11)
+#
+#  Z11.0011 <- lapply(Z11,function(z) if (all(z[2,1:2]==c(0,0)) && sum(z[2,])==2) z)
+#  Z11.0011 <- Z11.0011[!unlist(lapply(Z11.0011,is.null))]
+#  EZ11.0011 <- sum.matrices(Z11.0011)/length(Z11.0011)
+#  print(length(Z11.0011))
+#
+#  EZ11.0011
+#}
+#
+#Eo <- calc.settings(Z.o) # 630
+#Ea <- calc.settings(Z.a) # 584
+#Ed <- calc.settings(Z.d) # 3678
+#
+#
+#pdf("../../../prospectus/images/eSimFixed.pdf")
+#  par(mfrow=c(3,1))
+#    a.image(round(Eo,5),numbers=T,num.cex=.8,main="E [IBP(2) | First 2 Rows]")
+#    a.image(round(Ea,5),numbers=T,num.cex=.8,main="E [AIBP(2) | First 2 Rows,D]")
+#    a.image(round(Ed,5),numbers=T,num.cex=.7,main="E [ddIBP(2) | First 2 Rows,D]")
+#  par(mfrow=c(1,1))
+#dev.off()
 
-EZs <- sum.matrices(Zs)/B
-a.image(EZs,number=T,num.cex=.7)
+#uni <- one.sim("Duni",B=B,a=.5,printProgress=T)
+#temp <- one.sim("Duni",B=B,a=.5,printProgress=T)
+#pdf("../../../prospectus/images/uni.pdf")
+#  par(mfrow=c(3,1))
+#    a.image(round(uni$EZO,5),numbers=T,num.cex=.8,main="E [IBP(.5)]")
+#    a.image(round(uni$EZA,5),numbers=T,num.cex=.8,main="E [AIBP(.5) | f=1]")
+#    a.image(round(temp$EZO,5),numbers=T,num.cex=.8,main="E [ddIBP(.5) | f=1]")
+#  par(mfrow=c(1,1))
+#dev.off()
 
