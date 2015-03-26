@@ -181,7 +181,7 @@ one.sim <- function(D.name,a,B=1e4,num.cex=1,printProgress=F,lF=function(x) 1) {
 ##Comment out:
 ## Graphs:
 #source("ddibp.R")
-#a <- 1.5
+#a <- 2
 #result <- one.sim("D54",a=a,B=10000,printProg=T,lF=exp.f)
 #result <- one.sim("D55",a=a,B=10000,printProg=T,lF=exp.f)
 #result <- one.sim("D71",a=a,B=10000,printProg=T,lF=exp.f)
@@ -197,7 +197,7 @@ one.sim <- function(D.name,a,B=1e4,num.cex=1,printProgress=F,lF=function(x) 1) {
 #    a.image(result$EZA,number=T,main=paste("E[AIBP], E[ncol] =",result$mncola),
 #            num.cex=1)
 #    a.image(result$EZD,number=T, main=paste("E[ddIBP], E[ncol] =",
-#            result$mncold),num.cex=.9)
+#            result$mncold),num.cex=.7)
 #  par(mfrow=c(1,1))
 #dev.off()
 #
