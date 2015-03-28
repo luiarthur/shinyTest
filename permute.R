@@ -70,3 +70,8 @@ par(mfrow=c(1,1))
 #  a.image(round(EO,3),numbers=TRUE,main="IBP Not Permuted")
 #  a.image(round(EOp,3),numbers=TRUE,main="IBP Permuted")
 #par(mfrow=c(1,1))
+
+up <- unique.matrix(Zp)
+which(up[[1]] > B*.001)
+up[[1]][1:10]
+up[[2]][1:10]
