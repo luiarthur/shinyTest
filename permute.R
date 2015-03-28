@@ -17,35 +17,56 @@ calc.settings <- function(Zs) {
   EZ11.0011
 }
 
-B <- 1e4
+B <- 1e5
 D <- matrix(9,5,5)
 diag(D) <- 0
 D[1,3] <- D[3,1] <- D[2,5] <- D[5,2] <- 1
 
-Zo <- foreach(i=1:B) %dopar% raibp(a=2,N=5,l=function(s,t,d) exp(-d[s,t]))
-Zs <- foreach(i=1:B) %dopar% raibp(a=2,D=D,l=function(s,t,d) exp(-d[s,t]))
-Zp <- foreach(i=1:B) %dopar% raibp(a=2,D=D,l=function(s,t,d) exp(-d[s,t]),perm=TRUE)
+D2 <- matrix(9,5,5)
+diag(D2) <- 0
+D2[1,3] <- D2[3,1] <- D2[2,5] <- D2[5,2] <- D2[3,4] <- D2[4,3] <- 1 
+
+D6 <- matrix(9,6,6)
+diag(D6) <- 0
+D6[1,3] <- D6[3,1] <- D6[2,6] <- D6[6,2] <- D6[3,4] <- D6[4,3] <- 1
+
+
+Zo <- foreach(i=1:B) %dopar% {ot <- Sys.time()
+                              o <- raibp(a=2,N=6,l=function(s,t,d) exp(-d[s,t]))
+                              count.down(ot,i,B); o}
+Zop <- foreach(i=1:B) %dopar% {ot <- Sys.time()
+                               o <- raibp(a=2,N=6,l=function(s,t,d) 
+                                          exp(-d[s,t]),perm=TRUE)
+                               count.down(ot,i,B); o}
+Zs <- foreach(i=1:B) %dopar% {ot <- Sys.time()
+                              o <- raibp(a=2,D=D6,l=function(s,t,d) exp(-d[s,t]))
+                              count.down(ot,i,B); o}
+Zp <- foreach(i=1:B) %dopar% {ot <- Sys.time()
+                              o <- raibp(a=2,D=D6,l=function(s,t,d) 
+                                         exp(-d[s,t]),perm=TRUE)
+                              count.down(ot,i,B); o}           
 
 EO <- sum.matrices(Zo) / B
+EOp <- sum.matrices(Zop) / B
 EZ <- sum.matrices(Zs) / B
 EP <- sum.matrices(Zp) / B
-
-par(mfrow=c(3,1))
-  a.image(EO,numbers=TRUE,main="IBP")
-  a.image(EZ,numbers=TRUE,main="Not Permuted")
-  a.image(EP,numbers=TRUE,main="Permuted")
-par(mfrow=c(1,1))
 
 EOc <- calc.settings(Zo) #128
 EZc <- calc.settings(Zs) #128
 EPc <- calc.settings(Zp) #165
 
-par(mfrow=c(3,1))
-  a.image(round(EOc,4),numbers=TRUE,main="IBP")
-  a.image(round(EZc,4),numbers=TRUE,main="Not Permuted")
-  a.image(round(EPc,4),numbers=TRUE,main="Permuted")
+par(mfrow=c(3,2))
+  a.image(round(EO,3),numbers=TRUE,main="IBP")
+  a.image(round(EOc,3),numbers=TRUE,main="IBP")
+  a.image(round(EZ,3),numbers=TRUE,main="Not Permuted")
+  a.image(round(EZc,3),numbers=TRUE,main="Not Permuted")
+  a.image(round(EP,3),numbers=TRUE,main="Permuted")
+  a.image(round(EPc,3),numbers=TRUE,main="Permuted")
 par(mfrow=c(1,1))
 
-apply(EZc,1,sum)
-apply(EPc,1,sum)
-apply(EZp,1,sum)
+# THIS IS ALSO IMPORTANT: Make sure the permuted version reduces to the IBP
+# when the observations are equidistant.
+#par(mfrow=c(2,1))
+#  a.image(round(EO,3),numbers=TRUE,main="IBP Not Permuted")
+#  a.image(round(EOp,3),numbers=TRUE,main="IBP Permuted")
+#par(mfrow=c(1,1))

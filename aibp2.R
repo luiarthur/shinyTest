@@ -16,6 +16,19 @@ lof <- function(Z) {
   lof.Z
 }
 
+lof2 <- function(Z) {
+  Z <- as.matrix(Z)
+  lof.Z <- Z
+
+  if (ncol(Z)>1) {
+    Z <- Z[,sample(1:ncol(Z))]
+    ord <- apply(Z,2,function(x) min(which((x==1))))
+    lof.Z <- Z[,order(ord)]
+  }
+  
+  lof.Z
+}
+
 toMat <- function(s) {
   dims <- regexpr(": \\d* \\d*",s)
   begin <- as.integer(dims)+2
@@ -247,12 +260,13 @@ raibp <- function(N=3,a=3,D=NULL,l=inv,lf=function(x) 1,permute=F) {
   N <- nrow(D)
   K <- rpois(1,a)
   Z <- matrix(0,N,K) 
-  Z[1,0:K] <- 1 # The first customer draws a POI(a) number of new dishes
 
   #perm <- sample(1:N)
   #if (permute) {D <- permute.D(D,perm)}
   sig <- 1:N
   if (permute) sig <- sample(1:N)
+
+  Z[1,0:K] <- 1 # The first customer draws a POI(a) number of new dishes
 
   if (N>=2) {
     for (i in 2:N) {
@@ -278,7 +292,9 @@ raibp <- function(N=3,a=3,D=NULL,l=inv,lf=function(x) 1,permute=F) {
   if (permute) {
     inv.perm <- apply(matrix(1:N),1,function(x) which(x==sig))
     #Z <- Z[inv.perm,]
-    Z <- lof(Z[inv.perm,])
+    #Z <- lof(Z[inv.perm,])
+    Z <- lof2(Z[inv.perm,]) # Need to randomly reorder the Z columns first
+                            # So that reduces to original IBP
   }
 
   Z
